@@ -15,17 +15,71 @@ def balanced_score(vector):
 	score = 100 - abs(((ones - n/2)*200)/n)
 	return score
 	
+def convert_perm_to_ordinal(permutation):
+	n = permutation.shape[0]
+	#print n
+	ordinal = np.zeros(n)
+	temp = np.ones(n)
+	#print temp[:3].sum()
+	for i in range(0,n):
+		#print permutation[i]
+		#print temp[:permutation[i]]
+		ordinal[i] = int(temp[:permutation[i]].sum())
+		#print permutation[i]
+		temp[permutation[i]] = 0
+	#print ordinal
+	return ordinal.astype(int)
 	
-def fitness_function(vector):
-	return float(SAC(vector)) #+ float(non_linearity(vector)) + float(balanced_score(vector))
-	return float(non_linearity(vector))
-	#return float(balanced_score(vector))
+def get_Sbox_output(ordinal):
+	perm = convert_ordinal_to_perm(ordinal)
+	n = int(np.log2(ordinal.shape[0]))
+	result = []
+	for i in range(0,perm.shape[0]):
+		#print perm[i]
+		#print np.array(list(np.binary_repr(perm[i],width=n))).astype(int)
+		result.append(np.array(list(np.binary_repr(perm[i],width=n))).astype(int))
+	result = np.array(result)
+	return result.astype(int)
+	
+
+	
+
+def convert_ordinal_to_perm(ordinal):
+	n = ordinal.shape[0]
+	list1 = []
+	for i in range(0,n):
+		list1.append(i)
+	permutation = []
+	for i in range(0,n):
+		#print list1
+		#print ordinal[i] 
+		permutation.append(list1[int(ordinal[i])])
+		del list1[int(ordinal[i])]
+	#print permutation
+	return np.array(permutation).astype(int)
+	
+def fitness_function(output,coeffs):
+	matrix = get_Sbox_output(output)
+	n = matrix.shape[1]
+	balancedness = 0
+	non_lin = 0
+	SACness = 0
+	for i in range(0,n):
+		#print matrix[:,i]
+		balancedness += balanced_score(matrix[:,i])
+		non_lin += non_linearity(matrix[:,i])
+		SACness += SAC(matrix[:,i])
+	balancedness = float(balancedness)/n
+	non_lin = float(non_lin)/n
+	SACness = float(SACness)/n
+	return coeffs[0]*balancedness + coeffs[1]*non_lin + coeffs[2]*SACness
 	
 def hamming_distance(vector1, vector2):
 	return np.bitwise_xor(vector1,vector2).sum()
 	
 def non_linearity(vector):
 	#print type(vector)
+	#print "###"
 	n = int(np.log2(vector.shape[0]))
 	min_non_lin = vector.shape[0]
 	max_non_lin = pow(2,n-1) - pow(2,n/2-1)
@@ -35,8 +89,11 @@ def non_linearity(vector):
 	for i in range(0,matrix.shape[0]):
 		hd = hamming_distance(vector,matrix[i])
 		#print hd
-		if hd < min_non_lin:
+		#hd = min(hd, vector.shape[0] - hd)
+		if hd < min_non_lin:			
 			min_non_lin = hd
+			#print min_non_lin
+	#print "###___"
 	return (min_non_lin*100)/max_non_lin
 	
 def SAC_balanced(vector,num):
