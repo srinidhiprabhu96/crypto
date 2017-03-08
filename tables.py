@@ -54,8 +54,8 @@ def diffTable(sbox, size):
             table[a,b] += 1
     return table
 
-	
-def linearTableScore(table): 
+
+def linearTableScore(table):
 	""" Linear approximation table of an S-box. A lesser score implies a better S-Box"""
 	num_elems = table.shape[0]*table.shape[1]
 	half = table.shape[0]/2
@@ -67,8 +67,8 @@ def linearTableScore(table):
 				if a > count:
 					count = a
 	return float(count)/table.shape[1]
-	
-def diffTableScore(table): 
+
+def diffTableScore(table):
 	"""Differential distribution table of an S-box. A lesser score implies a better S-Box"""
 	num_elems = table.shape[0]*table.shape[1]
 	count = 0
@@ -79,3 +79,16 @@ def diffTableScore(table):
 			max_val = count
 	return float(max_val)/table.shape[1]
 
+def processTable(table):
+    """Returns the table with entries as bias values. Input should be a numpy.array object"""
+    tot = table.shape[0]
+    table = table / tot
+    table = table - 0.5
+    return table
+
+# my_data = np.genfromtxt('linearTables/SBOX1_lineartable.csv', delimiter=',')
+#
+# proc_data = processTable(my_data)
+#
+# print my_data[0][0]
+# print proc_data[0][0]
