@@ -79,11 +79,17 @@ def diffTableScore(table):
 			max_val = count
 	return float(max_val)/table.shape[1]
 
-def processTable(table):
+def processLinTable(table):
     """Returns the table with entries as bias values. Input should be a numpy.array object"""
     tot = table.shape[0]
     table = table / tot
     table = table - 0.5
+    return table
+
+def processDiffTable(table):
+    """Returns the table with entries as bias values. Input should be a numpy.array object"""
+    tot = table.shape[0]
+    table = table / tot
     return table
 
 # my_data = np.genfromtxt('linearTables/SBOX1_lineartable.csv', delimiter=',')
