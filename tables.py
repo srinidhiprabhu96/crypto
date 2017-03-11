@@ -84,7 +84,7 @@ def processTable(table):
     tot = table.shape[0]
     table = table / float(tot)
     table = table - 0.5
-    return table
+    return np.absolute(table)
 
 # my_data = np.genfromtxt('linearTables/SBOX1_lineartable.csv', delimiter=',')
 #
