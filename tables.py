@@ -82,7 +82,7 @@ def diffTableScore(table):
 def processLinTable(table):
     """Returns the table with entries as bias values. Input should be a numpy.array object"""
     tot = table.shape[0]
-    table = table / tot
+    table = table / float(tot)
     table = table - 0.5
     return table
 
