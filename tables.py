@@ -89,7 +89,7 @@ def processLinTable(table):
 def processDiffTable(table):
     """Returns the table with entries as bias values. Input should be a numpy.array object"""
     tot = table.shape[0]
-    table = table / tot
+    table = table / float(tot)
     return table
 
 # my_data = np.genfromtxt('linearTables/SBOX1_lineartable.csv', delimiter=',')
