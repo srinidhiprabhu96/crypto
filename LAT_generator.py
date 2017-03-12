@@ -2,6 +2,7 @@ from classes import *
 from tables import *
 import numpy as np
 import random
+import os
 
 ##########################################
 # Generates Linear Approximation Tables  #
@@ -13,7 +14,7 @@ import random
 # Assuming all files are .csv files
 files = os.listdir("Sboxes")
 #print files
-
+"""
 
 for name in files:
 	print "### "+name
@@ -27,9 +28,9 @@ for name in files:
 	print "LAT score: "+str(linearTableScore1(table))
 	print "$$$"
 	
-
 """
-Single LAT generator
+
+#Single LAT generator
 name = raw_input("Enter a filename(without extension): ")
 matrix = np.genfromtxt("Sboxes/"+name+'.csv',delimiter=',').astype(int)
 print matrix
@@ -40,4 +41,4 @@ np.savetxt("LinearTables/"+name+"_lineartable.csv", table, fmt='%i', delimiter="
 print "Table saved"
 print "LAT score: "+str(linearTableScore(table))
 
-"""
+

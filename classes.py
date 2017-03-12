@@ -18,6 +18,19 @@ def generate_individual(n):
 	#print ind
 	return np.array(ind)
 	
+def generate_neighbour(ind):
+	l = []
+	for i in range(0,ind.shape[0]):
+		l.append(ind[i])
+	val = 2 # Can be changed
+	for j in range(0,val):
+		index = np.random.randint(0,ind.shape[0])
+		if ind[index] == 0:
+			l[index] = 1
+		else:
+			l[index] = 0
+	return np.array(l)
+	
 def balanced_score(vector):
 	""" Returns a score based on the balancedness of the boolean function. More balanced implies the score is close to 100 """
 	n = vector.size
