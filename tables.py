@@ -67,6 +67,19 @@ def linearTableScore(table):
 				if a > count:
 					count = a
 	return float(count)/table.shape[1]
+	
+def linearTableScoreAvg(table):
+	""" Linear approximation table of an S-box. A lesser score implies a better S-Box"""
+	num_elems = table.shape[0]*table.shape[1]
+	half = table.shape[0]/2
+	count = 0
+	sum = 0
+	for i in range(1,table.shape[0]):
+		for j in range(0,table.shape[1]):
+			if i!=0 or j != 0:
+				sum += abs(table[i,j]-half)
+				count += 1
+	return float(sum)/(table.shape[1]*count)
 
 def diffTableScore(table):
 	"""Differential distribution table of an S-box. A lesser score implies a better S-Box"""

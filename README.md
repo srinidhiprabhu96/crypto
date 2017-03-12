@@ -1,4 +1,4 @@
-Run "python geentic_algorithm.py" to see the results.  
+Run "python genetic_algorithm.py" to see the results.  
 
 It uses genetic algorithms to find a good SBox.  
 
@@ -18,3 +18,9 @@ LAT_score.py - Computes the LAT score for an SBOX if the corresponding table is 
 SBOX_score.py - Computes the scores for all criteria and outputs the average over all output bits of the SBOX.  
 
 tables.py - Functions to generate LAT and DDT along with computing the scores.  
+
+LC.py - Supporting functions for finding the deadliest linear and differential trail  
+
+main_LC.py - Code for computing the minimum number of rounds and the maximum bias for 20 rounds.  
+
+main_DC.py - Code for computing the minimum number of rounds(DC) and the maximum prop ratio for 20 rounds.  
