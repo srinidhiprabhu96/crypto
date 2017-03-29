@@ -37,8 +37,8 @@ __uint128_t diff(__uint128_t in){
     for(j = 0; j < 8; j++){
       temp = in>>(128-8*i);   //get i'th byte
       temp = (temp>>j) & 1;   //get j'th bit in lsb
-      new_bit = ((i<<3)+j)/16;
-      new_byte = ((i<<3)+j)%16;
+      new_bit = ((i*8)+j)/16;
+      new_byte = ((i*8)+j)%16;
       temp = temp<<new_bit;
       temp = temp<<(new_byte*8);
       out = out | temp;
