@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdint.h>
+#include "common.c"
 
 // The space of this union is also 128 bits.
 union bits128
@@ -8,7 +9,6 @@ union bits128
     unsigned char byte[16];
 };
 
-// Read part is cupping for some reason
 union bits128 read_16_bytes(FILE *fp)
 {
 	__uint128_t ret_val = 0;
@@ -20,7 +20,7 @@ union bits128 read_16_bytes(FILE *fp)
 	{
 		fread(&buffer, 1, 1, fp);
 		block.byte[i] = buffer;
-		
+
 	}
 	return block;
 }
@@ -41,23 +41,27 @@ void write_16_bytes(FILE *fpw, union bits128 print)
 	abc = value.integer; // Variable abc now has the 128 bit integer.
 	def = function(abc);
 	print.integer = def;
-	write_16_bytes(print); 
-	For example, in the below code I just add 1 to the 128 bit integer and then write to file. I'm able to see that the values printed in the 2 files differ in the LSB of every 16 bit chunk.(Expected result/ 
+	write_16_bytes(print);
+	For example, in the below code I just add 1 to the 128 bit integer and then write to file. I'm able to see that the values printed in the 2 files differ in the LSB of every 16 bit chunk.(Expected result/
 
 */
 // For testing
 int main()
 {
-	FILE *fp,*fpw;
-	fp = fopen("../File Generator/5.txt","rb");
-	fpw = fopen("../File Generator/5_write.txt","wb");
+	FILE *fp,*fpw,*fpw2;
+	fp = fopen("plaintext.txt","rb");
+	fpw = fopen("ciphertext.txt","wb");
+	fpw2 = fopen("decrypted.txt","wb");
 	char buffer;
-	union bits128 value;
+	union bits128 value, cptxt, dectxt;
 	value = read_16_bytes(fp);
-	value.integer = value.integer + 1;
-	write_16_bytes(fpw,value);
-	value = read_16_bytes(fp);
-	value.integer = value.integer + 1;
-	write_16_bytes(fpw,value);
+	// value.integer = value.integer + 1;
+	cptxt.integer = diff(value.integer);
+	write_16_bytes(fpw,cptxt);
+	dectxt.integer = diff_inv(cptxt.integer);
+	write_16_bytes(fpw2,dectxt);
+	// value = read_16_bytes(fp);
+	// value.integer = value.integer + 1;
+	// write_16_bytes(fpw,value);
 	return 0;
 }

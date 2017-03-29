@@ -47,6 +47,30 @@ __uint128_t diff(__uint128_t in){
   return out;
 }
 
+__uint128_t diff_inv(__uint128_t in){
+  __uint128_t out = 0;
+  __uint128_t temp = 0;
+  int i,j,new_bit,new_byte;
+  for(i = 0; i < 16; i++){
+    for(j = 0; j < 8; j++){
+      temp = in>>(128-8*i);   //get i'th byte
+      temp = (temp>>j) & 1;   //get j'th bit in lsb
+      if(i < 8){
+        new_bit = i;
+        new_byte = 2*j;
+      }
+      else{
+        new_bit = i-8;
+        new_byte = 2*j+1;
+      }
+      temp = temp<<new_bit;
+      temp = temp<<(new_byte*8);
+      out = out | temp;
+    }
+  }
+  return out;
+}
+
 __uint128_t encrypt(__uint128_t in, __uint128_t key){   //didnt implement round key algo
   __uint128_t temp1,temp2;
   int i;
@@ -61,7 +85,21 @@ __uint128_t encrypt(__uint128_t in, __uint128_t key){   //didnt implement round 
   return temp1;
 }
 
-int main(){
-  printf("%lu\n",sizeof(sbox));
-  return 0;
+__uint128_t decrypt(__uint128_t in, __uint128_t key){   //didnt implement round key algo
+  __uint128_t temp1,temp2;
+  int i;
+  temp1 = in;
+  for(i = 0; i < 2; i++){
+    temp2 = rnd(temp2, key);
+  }
+  for(i = 0; i < 18; i++){
+    temp1 = diff_inv(temp2);
+    temp2 = rnd(temp1, key);
+  }
+  return temp2;
 }
+
+// int main(){
+//   printf("%lu\n",sizeof(sbox));
+//   return 0;
+// }
