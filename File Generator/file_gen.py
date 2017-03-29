@@ -10,6 +10,7 @@ filename = str(i)+".txt"
 fp = open(filename,"wb")
 for i in range(0,size):
 	n = random.randrange(256)
+	#n = random.randrange(97,124)
 	print n
 	fp.write(chr(n))
 fp.close()
