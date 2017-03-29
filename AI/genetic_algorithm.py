@@ -1,8 +1,10 @@
 from classes import *
-from tables import *
 import numpy as np
 import random
 import heapq
+import sys
+sys.path.insert(0,"../LAT_DDT")
+from tables import *
 
 ####################################################################
 # This code takes the relative importances of each criterion and   #
@@ -32,8 +34,8 @@ populate_matrix(outputs) #generates and stores the walsh-hadamand matrix, for fa
 ### Generate initial population ###
 for i in range(0,pop_size):
 	population.append(generate_individual(num_vars))
-###################################	
-	
+###################################
+
 max_fit = population[0]
 
 #### Iterate for a fixed number of iterations ###
@@ -41,7 +43,7 @@ for i in range(0,num_iter):
 	fitness = []
 	for j in range(0,pop_size):
 		fitness.append(fitness_function(population[j],coeffs))
-	
+
 	########## Take the n most-fit individuals obtained till now. n is the number of outputs. ##########
 	global_SBOX = global_SBOX + population
 	global_max = global_max + fitness
@@ -53,23 +55,23 @@ for i in range(0,num_iter):
 		del global_max[indx]
 		del global_SBOX[indx]
 	global_SBOX = tempbox
-	global_max = results	
+	global_max = results
 	###################
-	
+
 	fitness = np.array(fitness)
 	avg_fitness = fitness.sum()/pop_size
-	
+
 	max_fit = population[np.argmax(fitness)]
 	if fitness_function(max_fit,coeffs) > max_fitness:
 		max_fitness = fitness_function(max_fit,coeffs)
 		max_fit = population[np.argmax(fitness)]
-		
+
 	fitness = fitness/(fitness.sum())
-	
+
 	for j in range(0,fitness.shape[0]):
 		if j != fitness.shape[0]-1:
 			fitness[j+1] += fitness[j]
-	
+
 	############## Crossover operation in the genetic algorithm ##########
 	crossed = []
 	for j in range(0,pop_size,2):
@@ -83,22 +85,22 @@ for i in range(0,num_iter):
 			if fitness[k] > curr:
 				break
 		p2 = population[k]
-	
+
 		index = np.random.randint(0,p1.shape[0])
 
 		p = random.uniform(0,1)
 		if p < p_cross:
-			c1 = np.append(p1[:index],p2[index:]) 
-			c2 = np.append(p2[:index],p1[index:]) 
+			c1 = np.append(p1[:index],p2[index:])
+			c2 = np.append(p2[:index],p1[index:])
 		else:
 			c1 = p1
 			c2 = p2
-	
-	
+
+
 		crossed.append(c1)
 		crossed.append(c2)
 	##########################################################
-	
+
 	#### Mutation operation in the genetic algorithm #########
 	for j in range(0,len(crossed)):
 		curr = random.uniform(0,1)
@@ -116,8 +118,8 @@ for i in range(0,num_iter):
 			#print "End of mutation"
 	population = crossed
 	########################################################
-	
-#################################################	
+
+#################################################
 
 
 ######### Compute and print the Sbox scores ##########
@@ -143,6 +145,6 @@ print global_SBOX
 c = raw_input("\n\nDo you want to save this sbox?(y/n): ")
 if c == 'y':
 	name = raw_input("Enter the sbox name: ")
-	np.savetxt("Sboxes/"+name+".csv", global_SBOX, delimiter=",")
+	np.savetxt("../Sboxes/"+name+".csv", global_SBOX, delimiter=",")
 	print "SAVED"
 ############## END ############################################################################

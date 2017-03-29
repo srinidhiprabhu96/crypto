@@ -1,15 +1,15 @@
 import numpy as np
-from tables import *
+from LAT_DDT.tables import *
 from LC import *
 """
 # Code to find the linear bias tables.
-files = os.listdir("Sboxes")
+files = os.listdir("../Sboxes")
 
 for name in files:
 	print name
-	matrix = np.genfromtxt("LinearTables/"+name.replace(".csv","")+'_lineartable.csv',delimiter=',').astype(int)
-	matrix1 = processTable(matrix)	
-	np.savetxt("LAT_bias/"+name.replace(".csv","")+"_linearbias.csv", matrix1, delimiter=",")
+	matrix = np.genfromtxt("../LinearTables/"+name.replace(".csv","")+'_lineartable.csv',delimiter=',').astype(int)
+	matrix1 = processTable(matrix)
+	np.savetxt("../LAT_bias/"+name.replace(".csv","")+"_linearbias.csv", matrix1, delimiter=",")
 """
 
 populate_diffusion_layer() # Computes the diffusion layer
@@ -44,7 +44,7 @@ for i in range(1,129):
 				output = affect[0]
 			else:
 				output = [i]
-		
+
 	#print bias_reached
 	if bias_reached > max_bias:
 		max_bias = bias_reached
@@ -88,5 +88,3 @@ for i in range(1,129):
 	print "For bit "+str(i)+" we need "+str(j)+" rounds, giving a bias of "+str(bias_reached)
 print "Maximum number of rounds needed is "+str(max_rounds)
 """
-
-

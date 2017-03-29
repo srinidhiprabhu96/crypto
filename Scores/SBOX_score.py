@@ -1,6 +1,8 @@
-from classes import *
 import numpy as np
 import os
+import sys
+sys.path.insert(0,"../AI")
+from classes import *
 
 ###########################################################
 # Generates scores for every S-Box in the "Sboxes" folder #
@@ -11,7 +13,7 @@ files = os.listdir("Sboxes")
 
 for name in files:
 	print "### "+name.replace(".csv","")
-	matrix = np.genfromtxt("Sboxes/"+name,delimiter=',').astype(int)
+	matrix = np.genfromtxt("../Sboxes/"+name,delimiter=',').astype(int)
 	print matrix
 	print matrix.shape
 	n = matrix.shape[1]

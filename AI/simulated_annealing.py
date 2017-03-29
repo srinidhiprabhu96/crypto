@@ -1,9 +1,10 @@
 from classes import *
-from tables import *
 import numpy as np
 import random
 import heapq
-
+import sys
+sys.path.insert(0,"../LAT_DDT")
+from tables import *
 
 ####################################################################
 # This code takes the relative importances of each criterion and   #
@@ -50,13 +51,13 @@ for i in range(0,8):
 			if next_val > best_val:
 				best_val = next_val
 				best_node = neighbour
-				print "Best: "+str(best_val)	
-			E_diff =  next_val - curr_val 
+				print "Best: "+str(best_val)
+			E_diff =  next_val - curr_val
 			prob = random.uniform(0,1)
 			#print prob
 			#print float(1)/(1+np.exp(-E_diff/float(T)))
 			if prob < float(1)/(1+np.exp(-E_diff/float(T))):
-				node = neighbour				
+				node = neighbour
 		T -= eps*T
 	print best_val
 	print "Balancedness of output functions: "+ str(balanced_score(best_node))
@@ -70,7 +71,7 @@ SBOX = SBOX.transpose()
 c = raw_input("\n\nDo you want to save this sbox?(y/n): ")
 if c == 'y':
 	name = raw_input("Enter the sbox name: ")
-	np.savetxt("Sboxes/"+name+".csv", SBOX, delimiter=",")
+	np.savetxt("../Sboxes/"+name+".csv", SBOX, delimiter=",")
 	print "SAVED"
 ############## END ############################################################################
 """
@@ -84,13 +85,13 @@ while T > 1:
 		if next_val > best_val:
 			best_val = next_val
 			best_node = neighbour
-			print "Best: "+str(best_val)	
-		E_diff =  next_val - curr_val 
+			print "Best: "+str(best_val)
+		E_diff =  next_val - curr_val
 		prob = random.uniform(0,1)
 		print prob
 		print float(1)/(1+np.exp(-E_diff/float(T)))
 		if prob < float(1)/(1+np.exp(-E_diff/float(T))):
-			node = neighbour				
+			node = neighbour
 	T -= eps*T
 print best_val
 print "Balancedness of output functions: "+ str(balanced_score(best_node))

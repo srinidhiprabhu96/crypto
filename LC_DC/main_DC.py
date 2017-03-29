@@ -1,5 +1,5 @@
 import numpy as np
-from tables import *
+from LAT_DDT.tables import *
 from LC import *
 
 populate_diffusion_layer()
@@ -38,7 +38,7 @@ for i in range(1,17):
 					output = affect[0]
 				else:
 					output = [i]
-		
+
 		#print bias_reached
 		if bias_reached > max_bias:
 			max_bias = bias_reached

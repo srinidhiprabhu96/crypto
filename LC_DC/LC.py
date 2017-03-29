@@ -1,5 +1,6 @@
 import numpy as np
-from tables import *
+from LAT_DDT.tables import *
+
 diffusion_layer = None
 inv_diffusion_layer = None
 
@@ -23,7 +24,7 @@ def get_biases_for_output(matrix,output):
 	for i in range(0,output.shape[0]):
 		sum = sum*2+output[i]
 	return matrix[sum,:]
-	
+
 def get_bits(sbox,odiff,w):
 	binary = np.binary_repr(odiff,width=w)
 	bit_list = []
@@ -33,15 +34,15 @@ def get_bits(sbox,odiff,w):
 			bit_list.append(start+1+i)
 	return bit_list
 
-#sbox is an integer	
+#sbox is an integer
 def get_max_bias_of_sbox(sbox):
-	matrix = np.genfromtxt("LinearTables/SBOX"+str(sbox)+'_lineartable.csv',delimiter=',')
+	matrix = np.genfromtxt("../LinearTables/SBOX"+str(sbox)+'_lineartable.csv',delimiter=',')
 	return linearTableScore(matrix)
-	
+
 def get_max_prop_of_sbox(sbox):
-	matrix = np.genfromtxt("DifferentialTables/SBOX"+str(sbox)+'_difftable.csv',delimiter=',')
+	matrix = np.genfromtxt("../DifferentialTables/SBOX"+str(sbox)+'_difftable.csv',delimiter=',')
 	return diffTableScore(matrix)
-	
+
 #Assumption is that bit numbers are from 1 to 128
 #Sbox numbers are from 1 to 8
 def get_affecting_input_bits(output):
@@ -64,7 +65,7 @@ def get_bits_before_diffusion(affect):
 	output = affect[0]
 	for i in range(0,len(output)):
 		bit_list.append(inv_diffusion_layer[output[i]])
-		
+
 	sboxes = affect[1]
 	for sbox in sboxes:
 		prev_bits = get_sbox_inverse_diff_bits(sbox)
@@ -79,7 +80,7 @@ def get_bits_before_diffusion(affect):
 			if val != -1:
 				prev_bit_boxes.append((val,bit))
 		flag = 0
-		for i in range(0,len(prev_boxes)):			
+		for i in range(0,len(prev_boxes)):
 			for j in range(0,len(prev_bit_boxes)):
 				if prev_boxes[i][0] == prev_bit_boxes[j][0] and prev_boxes[i][1] not in bit_list:
 					bit_list.append(prev_boxes[i][1])
@@ -89,23 +90,22 @@ def get_bits_before_diffusion(affect):
 				break
 		if flag == 0:
 			bit_list.append(prev_boxes[0][1])
-			
-				
+
+
 	return list(set(bit_list))
-	
+
 def get_sbox_num(index):
 	num = (index-1)/8 + 1
 	if num > 8:
 		return -1
 	return num
-	
+
 def get_sbox_inverse_diff_bits(sbox):
 	indices = []
 	if sbox > 8:
 		return indices
 	indices = inv_diffusion_layer[(sbox-1)*8+1:(sbox)*8+1]
 	return indices
-	
+
 def byte_bit_to_index(byte,bit):
 	return 8*(byte-1)+bit
-		
