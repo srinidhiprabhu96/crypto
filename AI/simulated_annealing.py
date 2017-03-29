@@ -13,7 +13,7 @@ from tables import *
 
 #coeffs = raw_input("Enter the coefficients for balancedness, non-linearity and SAC score(all values between 0 and 1 and sum should be 1): ")
 #coeffs = map(float,coeffs.split())
-coeffs = (0,0,1)
+coeffs = (0.3,0.3,0.4)
 """ Parameters for simulated annealing. Change these parameters in the file, if needed."""
 num_vars = 8
 outputs = 8
