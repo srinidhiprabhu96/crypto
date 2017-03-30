@@ -1,13 +1,6 @@
 #include<stdio.h>
 #include<stdint.h>
-#include "common.c"
-
-// The space of this union is also 128 bits.
-union bits128
-{
-    __uint128_t integer;
-    unsigned char byte[16];
-};
+#include "common_new.c"
 
 union bits128 read_16_bytes(FILE *fp)
 {
@@ -53,12 +46,13 @@ int main()
 	fpw = fopen("ciphertext.txt","wb");
 	fpw2 = fopen("decrypted.txt","wb");
 	char buffer;
-	union bits128 value, cptxt, dectxt;
+	union bits128 value, cptxt, dectxt, key;
 	value = read_16_bytes(fp);
+	key.integer = 0xabcdef0987654321;
 	// value.integer = value.integer + 1;
-	cptxt.integer = encrypt(value.integer, 0xabcdef0987654321);
+	cptxt = rnd(value, key);
 	write_16_bytes(fpw,cptxt);
-	dectxt.integer = decrypt(cptxt.integer, 0xabcdef0987654321);
+	dectxt = dec_rnd(cptxt, key);
 	write_16_bytes(fpw2,dectxt);
 	// value = read_16_bytes(fp);
 	// value.integer = value.integer + 1;
