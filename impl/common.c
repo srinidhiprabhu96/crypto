@@ -29,6 +29,17 @@ __uint128_t rnd(__uint128_t in, __uint128_t key){
   return out;
 }
 
+__uint128_t dec_rnd(__uint128_t in, __uint128_t key){
+  __uint128_t out=0;
+  in = in ^ key;
+  __uint128_t right = in & 0xffffffffffffffff,
+             left = (in>>64) & 0xffffffffffffffff;
+   out = right;
+   out = out<<64;
+   out = out | (fbox(right) ^ left);
+   return out;
+}
+
 __uint128_t diff(__uint128_t in){
   __uint128_t out = 0;
   __uint128_t temp = 0;
@@ -77,7 +88,8 @@ __uint128_t encrypt(__uint128_t in, __uint128_t key){   //didnt implement round 
   temp1 = in;
   for(i = 0; i < 18; i++){
     temp2 = rnd(temp1, key);
-    temp1 = diff(temp2);
+    // temp1 = diff(temp2);
+    temp1 = temp2;
   }
   for(i = 0; i < 2; i++){
     temp1 = rnd(temp1, key);
@@ -88,13 +100,14 @@ __uint128_t encrypt(__uint128_t in, __uint128_t key){   //didnt implement round 
 __uint128_t decrypt(__uint128_t in, __uint128_t key){   //didnt implement round key algo
   __uint128_t temp1,temp2;
   int i;
-  temp1 = in;
+  temp2 = in;
   for(i = 0; i < 2; i++){
-    temp2 = rnd(temp2, key);
+    temp2 = dec_rnd(temp2, key);
   }
   for(i = 0; i < 18; i++){
-    temp1 = diff_inv(temp2);
-    temp2 = rnd(temp1, key);
+    // temp1 = diff_inv(temp2);
+    temp1 = temp2;
+    temp2 = dec_rnd(temp1, key);
   }
   return temp2;
 }
