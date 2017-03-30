@@ -56,9 +56,9 @@ int main()
 	union bits128 value, cptxt, dectxt;
 	value = read_16_bytes(fp);
 	// value.integer = value.integer + 1;
-	cptxt.integer = rnd(value.integer, 0xabcdef0987654321);
+	cptxt.integer = encrypt(value.integer, 0xabcdef0987654321);
 	write_16_bytes(fpw,cptxt);
-	dectxt.integer = dec_rnd(cptxt.integer, 0xabcdef0987654321);
+	dectxt.integer = decrypt(cptxt.integer, 0xabcdef0987654321);
 	write_16_bytes(fpw2,dectxt);
 	// value = read_16_bytes(fp);
 	// value.integer = value.integer + 1;

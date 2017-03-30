@@ -46,8 +46,10 @@ __uint128_t diff(__uint128_t in){
   int i,j,new_bit,new_byte;
   for(i = 0; i < 16; i++){
     for(j = 0; j < 8; j++){
-      temp = in>>(128-8*i);   //get i'th byte
-      temp = (temp>>j) & 1;   //get j'th bit in lsb
+      // temp = in>>(128-8*i);   //get i'th byte
+      // temp = (temp>>j) & 1;   //get j'th bit in lsb
+      temp = in>>(128-8*(i+1));   //get i'th byte
+      temp = (temp>>(8-(j+1))) & 1;   //get j'th bit in lsb
       new_bit = ((i*8)+j)/16;
       new_byte = ((i*8)+j)%16;
       temp = temp<<new_bit;
@@ -64,8 +66,10 @@ __uint128_t diff_inv(__uint128_t in){
   int i,j,new_bit,new_byte;
   for(i = 0; i < 16; i++){
     for(j = 0; j < 8; j++){
-      temp = in>>(128-8*i);   //get i'th byte
-      temp = (temp>>j) & 1;   //get j'th bit in lsb
+      // temp = in>>(128-8*i);   //get i'th byte
+      // temp = (temp>>j) & 1;   //get j'th bit in lsb
+      temp = in>>(128-8*(i+1));   //get i'th byte
+      temp = (temp>>(8-(j+1))) & 1;   //get j'th bit in lsb
       if(i < 8){
         new_bit = i;
         new_byte = 2*j;
@@ -88,8 +92,8 @@ __uint128_t encrypt(__uint128_t in, __uint128_t key){   //didnt implement round 
   temp1 = in;
   for(i = 0; i < 18; i++){
     temp2 = rnd(temp1, key);
-    // temp1 = diff(temp2);
-    temp1 = temp2;
+    temp1 = diff(temp2);
+    // temp1 = temp2;
   }
   for(i = 0; i < 2; i++){
     temp1 = rnd(temp1, key);
@@ -105,8 +109,8 @@ __uint128_t decrypt(__uint128_t in, __uint128_t key){   //didnt implement round 
     temp2 = dec_rnd(temp2, key);
   }
   for(i = 0; i < 18; i++){
-    // temp1 = diff_inv(temp2);
-    temp1 = temp2;
+    temp1 = diff_inv(temp2);
+    // temp1 = temp2;
     temp2 = dec_rnd(temp1, key);
   }
   return temp2;
