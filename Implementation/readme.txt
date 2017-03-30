@@ -3,10 +3,10 @@
 2) To generate the plaintext files of different sizes
 	python file_gen.py
 	These files will be saved in the "plaintext" folder.
-3) To encrypt a file:
+3) To encrypt a file(using counter mode of operation):
       ./encrypt <path_to_plaintext_file> <path_to_output_file> <key_file>
       These files will be saved in the "ciphertext" folder.
-4) To decrypt a file:
+4) To decrypt a file(using counter mode of operation):
       ./decrypt <path_to_ciphertext_file> <output_file> <key_file>
       These files will be saved in the "decryptedtext" folder.
 5) To plot time vs file size graphs:
