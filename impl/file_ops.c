@@ -1,7 +1,8 @@
 #include<stdio.h>
 #include<stdint.h>
 #include "common.c"
-
+#include<time.h>
+#include<math.h>
 // The space of this union is also 128 bits.
 union bits128
 {
@@ -53,15 +54,35 @@ int main()
 	fpw = fopen("ciphertext.txt","wb");
 	fpw2 = fopen("decrypted.txt","wb");
 	char buffer;
+	char file_pt[100],file_ct[100],file_dt[100];
 	union bits128 value, cptxt, dectxt;
-	value = read_16_bytes(fp);
-	// value.integer = value.integer + 1;
-	cptxt.integer = encrypt(value.integer, 0xabcdef0987654321);
-	write_16_bytes(fpw,cptxt);
-	dectxt.integer = decrypt(cptxt.integer, 0xabcdef0987654321);
-	write_16_bytes(fpw2,dectxt);
-	// value = read_16_bytes(fp);
-	// value.integer = value.integer + 1;
-	// write_16_bytes(fpw,value);
+	int i;
+	for(i=5;i<=20;i++)
+	{
+		sprintf(file_pt,"../File Generator/%d.txt",i);
+		sprintf(file_ct,"%d_ct.txt",i);
+		sprintf(file_dt,"%d_dt.txt",i);
+		fp = fopen(file_pt,"rb");
+		fpw = fopen(file_ct,"wb");
+		fpw2 = fopen(file_dt,"wb");
+		int size,j;
+		fseek(fp, 0L, SEEK_END);
+		size = ftell(fp);
+		rewind(fp);
+		clock_t time = 0,start,end;
+		for(j=0;j<size/16;j++)
+		{
+			value = read_16_bytes(fp);
+			start = clock();
+			cptxt.integer = encrypt(value.integer, 0xabcdef0987654321);
+			end = clock();
+			time += (end - start);
+			/*write_16_bytes(fpw,cptxt);
+			dectxt.integer = decrypt(cptxt.integer, 0xabcdef0987654321);
+			write_16_bytes(fpw2,dectxt);*/
+		}
+		printf("File size: %lf\n",pow(2,i));
+		printf("Total encrypt time: %lf\n",(double)(time)/CLOCKS_PER_SEC);
+	}
 	return 0;
 }
