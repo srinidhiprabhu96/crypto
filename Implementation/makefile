@@ -7,10 +7,10 @@ compile:
 	gcc plot_decrypt.c -o plot_decrypt.out -lm
 
 plot_encrypt:
-	./plot_encrypt.out | plotter.py
+	./plot_encrypt.out | python plotter.py
 
 plot_decrypt:
-	./plot_decrypt.out | plotter.py
+	./plot_decrypt.out | python plotter.py
 
 clean:
 	rm *.out

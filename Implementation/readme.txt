@@ -5,5 +5,5 @@
 3) To decrypt a file:
       ./decrypt <ciphertext_file> <output_file> <key_file>
 4) To plot time vs file size graphs:
-make plot_encrypt
-make plot_decrypt
+      make plot_encrypt
+      make plot_decrypt
