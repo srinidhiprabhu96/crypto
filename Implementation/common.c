@@ -138,9 +138,8 @@ __uint128_t encrypt(__uint128_t in, __uint128_t key){   //didnt implement round 
   int i;
   temp1 = in;
   for(i = 0; i < 18; i++){
-    // temp2 = rnd(temp1, key);
-    temp1 = rnd(temp1, key);
-    // temp1 = diff(temp2);
+    temp2 = rnd(temp1, key);
+    temp1 = diff(temp2);
   }
   for(i = 0; i < 2; i++){
     temp1 = rnd(temp1, key);
