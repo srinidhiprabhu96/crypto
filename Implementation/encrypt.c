@@ -9,7 +9,7 @@ void encrypt_file(char *pt_file, char *ct_file, __uint128_t key)
 {
 	FILE *fpr, *fpw;
 	__uint128_t counter = 0xabcdef0987654321, block;
-	union bits128 pt,ct;
+	union bits128 pt,ct,block1,counter1;
 	fpr = fopen(pt_file,"r");
 	fpw = fopen(ct_file,"w");
 	int size,i,n;
@@ -26,10 +26,9 @@ void encrypt_file(char *pt_file, char *ct_file, __uint128_t key)
 	for(i=0;i<n;i++)
 	{
 		pt = read_16_bytes(fpr);
-		block = encrypt(pt.integer, key);
-		
-		//ct.integer = pt.integer ^ block;
-		ct.integer = block;
+		block = encrypt(counter, key);
+		ct.integer = pt.integer ^ block;
+		//ct.integer = block;
 		write_16_bytes(fpw, ct);
 		counter++;
 	}
@@ -41,7 +40,7 @@ int main(int argc, char *argv[])
 {
 	if(argc != 4)
 	{
-		printf("Usage: ./encrypt <PT_file> <CT_file> <Key file>\n");
+		printf("Usage: ./encrypt.out <PT_file> <CT_file> <Key file>\n");
 		exit(0);
 	}
 	union bits128 key;
