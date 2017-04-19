@@ -1,10 +1,10 @@
 all: compile
 
 compile:
-	gcc encrypt.c -o encrypt.out
-	gcc decrypt.c -o decrypt.out
-	gcc plot_encrypt.c -o plot_encrypt.out -lm
-	gcc plot_decrypt.c -o plot_decrypt.out -lm
+	gcc encrypt.c -o encrypt.out -O3
+	gcc decrypt.c -o decrypt.out -O3
+	gcc plot_encrypt.c -o plot_encrypt.out -lm -O3
+	gcc plot_decrypt.c -o plot_decrypt.out -lm -O3
 
 plot_encrypt:
 	./plot_encrypt.out | python plotter.py
